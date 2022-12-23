@@ -1,3 +1,6 @@
+// (ref)
+// http://www1.meijo-u.ac.jp/~kohara/cms/technicalreport/ros-melodic-cvbridge
+
 #include <ros/ros.h>
 #include <image_transport/image_transport.h>
 #include <cv_bridge/cv_bridge.h>
