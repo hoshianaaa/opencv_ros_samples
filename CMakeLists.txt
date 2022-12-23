@@ -218,3 +218,12 @@ target_link_libraries(
  ${catkin_LIBRARIES}
  ${OpenCV_LIBRARIES}
 )
+
+add_executable(
+ blob src/blob.cpp
+)
+target_link_libraries(
+ blob
+ ${catkin_LIBRARIES}
+ ${OpenCV_LIBRARIES}
+)
