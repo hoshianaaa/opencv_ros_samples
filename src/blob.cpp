@@ -1,5 +1,7 @@
 // (ref)
 // http://www1.meijo-u.ac.jp/~kohara/cms/technicalreport/ros-melodic-cvbridge
+// ref parameter
+// https://deha.co.jp/magazine/blob-in-opencv/
 
 #include <ros/ros.h>
 #include <image_transport/image_transport.h>
@@ -9,10 +11,14 @@
 #include <opencv2/highgui/highgui.hpp>
 #include "opencv2/opencv.hpp"
 
+#include <std_msgs/Float64.h>
+
 // (ref) http://library.isr.ist.utl.pt/docs/roswiki/cv_bridge(2f)Tutorials(2f)UsingCvBridgeToConvertBetweenROSImagesAndOpenCVImages.html
 namespace enc = sensor_msgs::image_encodings;
 using namespace cv;
 using namespace std;
+
+double P1 = 100;
  
 class ImageConverter
 {
@@ -20,6 +26,9 @@ class ImageConverter
   image_transport::ImageTransport it_;
   image_transport::Subscriber image_sub_;
   image_transport::Publisher image_pub_;
+
+  ros::Subscriber p1_sub_;
+  
 public:
   ImageConverter()
     : it_(nh_)
@@ -27,10 +36,18 @@ public:
     // Subscrive to input video feed and publish output video feed
     image_sub_ = it_.subscribe("/usb_cam/image_raw", 1, &ImageConverter::imageCb, this);
     image_pub_ = it_.advertise("/image_converter/output_video", 1);
+
+    p1_sub_ = nh_.subscribe("blob/param1", 1, &ImageConverter::p1_callback, this);
   }
   ~ImageConverter()
   {
   }
+  void p1_callback(const std_msgs::Float64ConstPtr& msg)
+  {
+    std::cout << "p1 callback: " << msg->data << std::endl;
+    P1 = msg->data;
+  }
+
   void imageCb(const sensor_msgs::ImageConstPtr& msg)
   {
 
@@ -62,7 +79,7 @@ public:
 
 	// Filter by Area.
 	params.filterByArea = true;
-	params.minArea = 100;
+	params.minArea = P1;
 
 	// Filter by Circularity
 	params.filterByCircularity = true;
