@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+
+<launch>
+
+  <!--include file="$(find xxx)/launch/xxx.launch"/-->
+  <node pkg="usb_cam" type ="usb_cam_node" name="usb_cam" output="log"/>
+  <node pkg="opencv_ros_samples" type ="hinagata" name="hinagata" output="log"/>
+  <node pkg="rqt_image_view" type ="rqt_image_view" name="rqt_image_view" output="log"/>
+
+  <!--node pkg="rviz" type="rviz" name="rviz" args="-d $(find PACKAGE_NAME)/config/SETTING.rviz"/-->
+
+</launch>
+
+
